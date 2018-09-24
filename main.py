@@ -71,14 +71,11 @@ def combine_clip_batch():
     # Create a VideoFileClip object for each file in the date folder
     clip_dir = f'/files/twitch/{datetime.today().strftime("%Y-%m-%d")}'
     video_clips = []
-    i = 0
     for clip in os.listdir(clip_dir):
-        if i == 5:
-            break
         video_clips.append(VideoFileClip(f'{clip_dir}/{clip}').resize((1280,720)))
-        i += 1
     combined_clip = concatenate_videoclips(video_clips, method='compose')
     combined_clip.write_videofile(f'{clip_dir}.mp4')
+    print('Completed combining and rendering video...')
 
 
 def main():
