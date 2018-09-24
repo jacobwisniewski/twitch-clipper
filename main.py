@@ -38,10 +38,11 @@ def get_recent_top_clips_data(game_id):
 
 def get_clip_download_url(clip):
     """Scraps the clip download url"""
+    # Uses selenium to open the twitch clips website, so javascript can run
     driver = webdriver.Chrome('/files/chromedriver/chromedriver.exe')
     driver.get(clip['url'])
     sleep(2)
-
+    # Gets the .mp4 download url
     soup = BeautifulSoup(driver.page_source, "html5lib")
     url = soup.find('video')['src']
     driver.quit()
@@ -71,6 +72,7 @@ def combine_clip_batch():
     # Create a VideoFileClip object for each file in the date folder
     clip_dir = f'/files/twitch/{datetime.today().strftime("%Y-%m-%d")}'
     video_clips = []
+    # Gets all the video files in the current date directory
     for clip in os.listdir(clip_dir):
         video_clips.append(VideoFileClip(f'{clip_dir}/{clip}').resize((1280,720)))
     combined_clip = concatenate_videoclips(video_clips, method='compose')
